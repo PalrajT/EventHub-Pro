@@ -81,22 +81,108 @@ npm start
 4. **Manage registrations** from your dashboard
 5. Attendees receive **digital tickets** upon approval
 
+## 🚀 Deployment Guide
+
+### Free Deployment Setup
+
+Deploy your app using these free platforms:
+- **Frontend**: Vercel (unlimited deployments)
+- **Backend**: Render (750 hrs/month free)
+- **Database**: MongoDB Atlas (512MB free cluster)
+
+### Step 1: Setup MongoDB Atlas
+
+1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a **FREE cluster** (M0 Sandbox)
+3. Create a database user (username + password)
+4. Whitelist IP: `0.0.0.0/0` (allow all)
+5. Get connection string: `mongodb+srv://<user>:<password>@cluster.xxxxx.mongodb.net/event-ticketing`
+
+### Step 2: Deploy Backend to Render
+
+1. Push code to GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com/)
+3. Click **New** → **Web Service**
+4. Connect your GitHub repo
+5. Configure:
+   - **Name**: eventhub-backend
+   - **Root Directory**: `backend`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+6. Add environment variables:
+   - `MONGODB_URI`: (your Atlas connection string)
+   - `JWT_SECRET`: (generate with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
+   - `PORT`: `5000`
+   - `NODE_ENV`: `production`
+7. Deploy and copy your backend URL: `https://eventhub-backend.onrender.com`
+
+### Step 3: Deploy Frontend to Vercel
+
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login: `vercel login`
+3. Navigate to frontend: `cd frontend`
+4. Create `.env.production`:
+   ```env
+   REACT_APP_API_URL=https://eventhub-backend.onrender.com
+   ```
+5. Deploy: `vercel --prod`
+6. Or connect via [Vercel Dashboard](https://vercel.com/new):
+   - Import GitHub repo
+   - Set **Root Directory**: `frontend`
+   - Add environment variable: `REACT_APP_API_URL` = your backend URL
+
+### Step 4: Update API Configuration
+
+Update `frontend/src/services/api.js` to use environment variable:
+```javascript
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+```
+
+### Step 5: Test Your Deployment
+
+1. Visit your Vercel URL
+2. Sign up as an organizer
+3. Create an event
+4. Test registration flow
+
+### 🔄 Auto-Deployment
+
+Both platforms support auto-deployment from GitHub:
+- Push to `main` branch → automatic deployment
+- Pull requests create preview deployments
+
+### 📊 Monitor Your App
+
+- **Render Logs**: Dashboard → Logs tab
+- **Vercel Analytics**: Dashboard → Analytics
+- **MongoDB Atlas**: Cluster → Metrics
+
 ---
 
-Built with ❤️ using MERN Stack
+## 🛠️ Troubleshooting
 
 **MongoDB Connection Error:**
 - Ensure MongoDB is running locally
 - Check connection string in `.env`
-- For Atlas, verify IP whitelist
+- For Atlas, verify IP whitelist and database user
 
 **CORS Issues:**
 - Verify frontend proxy in `package.json`
 - Check backend CORS configuration
+- Ensure backend URL is correct in production
 
 **Port Already in Use:**
 - Change PORT in backend `.env`
 - Update proxy in frontend `package.json`
+
+**Render Free Tier Sleep:**
+- Free services sleep after 15 min inactivity
+- First request takes 30-60s to wake up
+- Consider upgrading or using cron-job.org to ping
+
+---
+
+Built with ❤️ using MERN Stack
 
 ## 📝 Future Enhancements
 
