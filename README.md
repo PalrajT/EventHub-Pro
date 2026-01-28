@@ -182,8 +182,6 @@ Both platforms support auto-deployment from GitHub:
 
 ---
 
-Built with ❤️ using MERN Stack
-
 ## 📝 Future Enhancements
 
 - Email notifications for registration status
