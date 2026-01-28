@@ -1,4 +1,4 @@
-# � EventHub Pro
+# EventHub Pro
 
 A modern, professional event ticketing platform built with the MERN stack. Organizers can create events and manage registrations with automated or manual approval workflows.
 
