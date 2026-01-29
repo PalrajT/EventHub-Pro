@@ -31,7 +31,7 @@ A modern, professional event ticketing platform built with the MERN stack. Organ
 
 ### Prerequisites
 - Node.js (v14+)
-- MongoDB (local or Atlas)
+- MongoDB Atlas account
 
 ### Installation
 
@@ -44,15 +44,23 @@ cd ../frontend
 npm install
 ```
 
-2. **Configure environment:**
+2. **Setup MongoDB Atlas:**
+   - Create a free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+   - Create a new cluster (M0 Free tier)
+   - Create a database user with username and password
+   - Add your IP address to the IP Whitelist (or use `0.0.0.0/0` for development)
+   - Get your connection string from the "Connect" button
+
+3. **Configure environment:**
 Create `backend/.env`:
 ```env
-MONGODB_URI=mongodb://localhost:27017/event-ticketing
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.xxxxx.mongodb.net/event-ticketing?retryWrites=true&w=majority
 JWT_SECRET=your_secret_key_here
 PORT=5000
 ```
+Replace `<username>`, `<password>`, and `cluster.xxxxx.mongodb.net` with your actual MongoDB Atlas credentials.
 
-3. **Run the application:**
+4. **Run the application:**
 ```bash
 # Terminal 1 - Backend
 cd backend
@@ -63,7 +71,7 @@ cd frontend
 npm start
 ```
 
-4. **Access:**
+5. **Access:**
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:5000`
 
@@ -84,9 +92,10 @@ npm start
 ## ️ Troubleshooting
 
 **MongoDB Connection Error:**
-- Ensure MongoDB is running locally
-- Check connection string in `.env`
-- For Atlas, verify IP whitelist and database user
+- Verify your Atlas connection string in `.env`
+- Check that IP address is whitelisted in Atlas
+- Ensure database user credentials are correct
+- Confirm network access settings in MongoDB Atlas
 
 **CORS Issues:**
 - Verify frontend proxy in `package.json`
